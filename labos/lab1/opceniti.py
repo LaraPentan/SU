@@ -13,8 +13,8 @@ class opceniti(Klasifikator):
 		determinanta = numpy.linalg.det(self.sigma[klasa])
 		umnozak = razlika.T * self.sigma[klasa].I * razlika
 
-		brojnik = numpy.exp(-0.5 * umnozak.item(0,0))
-		nazivnik = numpy.sqrt(determinanta) * numpy.power((2 * numpy.pi), n / 2.)
+		brojnik = numpy.exp(-0.5 * umnozak.item(0, 0))
+		nazivnik = numpy.sqrt(determinanta) * numpy.power(2. * numpy.pi, n / 2.)
 
 		return brojnik / nazivnik
 

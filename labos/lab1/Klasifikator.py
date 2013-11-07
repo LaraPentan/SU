@@ -60,7 +60,7 @@ class Klasifikator(object):
 
 		# fix computed values
 		for key in self.klase:
-			self.P[key] /= len(train_set)
+			self.P[key] /= 1.0 * len(train_set)
 
 		# print computed values
 		"""
