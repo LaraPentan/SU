@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import codecs
 
@@ -9,6 +10,9 @@ from izotropna import *
 def parse_input(filename):
 	L = list()
 	f = open(filename, "r")	
+
+	# ignore first line
+	f.readline()
 
 	for line in f:
 		x = list()
@@ -39,43 +43,55 @@ def main():
 			print "Done"
 
 	# zeljeni poredak u ispisu	
-	poredak = ["Narancasta", "Zuta", "Zelena", "Plava", "Tirkizna", "Indigo", "Modra", "Magenta"]
+	poredak = ["Narančasta", "Žuta", "Zelena", "Plava", "Tirkizna", "Indigo", "Modra", "Magenta"]
 
-	f = open("greske.dat", "w")
+	f = open("../output/greske.dat", "w")
 
 	# opceniti
 	model_a = opceniti()
 	print "Treniram opceniti model ...",
 	model_a.train(train_set, poredak)
+	# model_a.printParameters()
 	print "Done"
-	model_a.printAposterioriValues("opceniti.dat")
+	model_a.printAposterioriValues(train_set, "../output/opceniti.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("opceniti", model_a.getErrorRate(train_set), model_a.getErrorRate(test_set)))
 	
 	# dijeljena
 	model_b = dijeljena()
 	print "Treniram model s dijeljenom matricom ...",
 	model_b.train(train_set, poredak)
+	# model_b.printParameters()
 	print "Done"
-	model_b.printAposterioriValues("dijeljena.dat")
+	model_b.printAposterioriValues(train_set, "../output/dijeljena.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("dijeljena", model_b.getErrorRate(train_set), model_b.getErrorRate(test_set)))
 	
 	# dijagonalna
 	model_c = dijagonalna()
 	print "Treniram model s dijagonalnom matricom ...",
 	model_c.train(train_set, poredak)
+	# model_c.printParameters()
 	print "Done"
-	model_c.printAposterioriValues("dijagonalna.dat")
+	model_c.printAposterioriValues(train_set, "../output/dijagonalna.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("dijagonalna", model_c.getErrorRate(train_set), model_c.getErrorRate(test_set)))
+
 	
 	# izotropna
 	model_d = izotropna()
 	print "Treniram model s izotropnom matricom ...",
 	model_d.train(train_set, poredak)
+	# model_d.printParameters()
 	print "Done"
-	model_d.printAposterioriValues("izotropna.dat")
+	model_d.printAposterioriValues(train_set, "../output/izotropna.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("izotropna", model_d.getErrorRate(train_set), model_d.getErrorRate(test_set)))
 
 	f.close()
+
+	# nadji 5 najnejednoznacnijih tocaka za opceniti model
+	print "Trazim nejednoznacne uzorke iz skupa za testiranje ...",
+	nejednoznacne = model_a.getAmbigousSamples(test_set)
+	print "Done"
+	model_a.printAposterioriValues(nejednoznacne[:5], "../output/nejednoznacne.dat")
+	
 	return
 
 if __name__ == "__main__":
