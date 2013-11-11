@@ -10,6 +10,7 @@ class Klasifikator(object):
 		self.mi = dict()
 		self.sigma = dict()
 		self.klase = list()
+		self.__cache = dict()
 
 	def __dummy_train(self):
 		# primjer iz skripte, 68.stranica
@@ -87,18 +88,16 @@ class Klasifikator(object):
 		return brojnik / nazivnik
 
 	def assignClass(self, x):
-		# assume some random class is the best fit
 		najbolja_klasa = set_head(self.klase)
 		najbolja_ocjena = self.getAposterioriValue(najbolja_klasa, x)
  
-		# find the best fit class
 		for klasa in self.klase:
 			ocjena = self.getAposterioriValue(klasa, x)
 			if ocjena > najbolja_ocjena:
 				najbolja_ocjena = ocjena
 				najbolja_klasa = klasa
 
-		return najbolja_klasa
+		return (najbolja_klasa, najbolja_ocjena)
 
 	def getErrorRate(self, test_set):
 		greska = 0.0
@@ -108,18 +107,23 @@ class Klasifikator(object):
 		
 		for uzorak in test_set:
 			(x, y) = uzorak
-			h = self.assignClass(x)
+			(h, p) = self.assignClass(x)
 			if h != y:
 				greska += 1.0
 
 		return greska / uzoraka
 
 	def getAposterioriValue(self, klasa, x):
+		if (klasa, tuple(x)) in self.__cache:
+			return self.__cache[(klasa, tuple(x))]
+
 		Px = 0.0
 		for key in self.klase:
 			Px += self.P[key] * self.getProbability(x, key)
 
-		return self.P[klasa] * self.getProbability(x, klasa) / Px
+		prob = self.P[klasa] * self.getProbability(x, klasa) / Px
+		self.__cache[(klasa, tuple(x))] = prob 
+		return prob 
 	
 	def getAmbigousSamples(self, test_set):
 		sve = list()
@@ -127,18 +131,9 @@ class Klasifikator(object):
 
 		for uzorak in test_set:
 			(x, y) = uzorak
+			(h, p) = self.assignClass(x)
 			
-			najbolja_klasa = set_head(self.klase)
-			najbolja_ocjena = self.getAposterioriValue(najbolja_klasa, x)
-			
-			for klasa in self.klase:
-				ocjena = self.getAposterioriValue(klasa, x)
-				if ocjena > najbolja_ocjena:
-					najbolja_ocjena = ocjena
-					najbolja_klasa = klasa
-
-				
-			sve.append((najbolja_ocjena, uzorak))
+			sve.append((p, uzorak))
 
 		for r in sorted(sve):
 			(ocjena, uzorak) = r
@@ -171,10 +166,13 @@ class Klasifikator(object):
 
 		for uzorak in test_set:
 			(x, y) = uzorak
+			(h, p) = self.assignClass(x)
+
 			buff = ""
 			for klasa in self.klase:
 				buff += ("%.2lf\t" % self.getAposterioriValue(klasa, x))
-			buff += self.assignClass(x) + '\n'
+
+			buff += h + '\n'
 
 			f.write(buff)
 
