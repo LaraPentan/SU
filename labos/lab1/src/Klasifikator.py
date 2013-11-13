@@ -25,7 +25,7 @@ class Klasifikator(object):
 		self.sigma[1] = numpy.matrix([[1, -0.75, 0.2], [-0.75, 6.25, 1.5], [0.2, 1.5, 4]])
 		self.sigma[2] = numpy.matrix([[4, 0.7, 2], [0.7, 12.25, -3.5], [2, -3.5, 16]])
 		return
-	
+
 	def train(self, train_set, poredak = list()):
 		skup_klasa = set()
 
@@ -44,11 +44,11 @@ class Klasifikator(object):
 			if y in self.mi:
 				self.mi[y] += numpy.matrix(x).T
 			else:
-				self.mi[y] = numpy.matrix(x).T	
+				self.mi[y] = numpy.matrix(x).T
 
 		# extract classes into list
 		self.klase = poredak + sorted(list(skup_klasa))
-		
+
 		# fix computed values
 		for key in self.klase:
 			self.mi[key] /= self.P[key]
@@ -56,14 +56,14 @@ class Klasifikator(object):
 		# compute sigma
 		for uzorak in train_set:
 			(x, y) = uzorak
-			
+
 			razlika = numpy.matrix(x).T - self.mi[y]
 
 			if y in self.sigma:
 				self.sigma[y] += razlika * razlika.T
 			else:
 				self.sigma[y] = razlika * razlika.T
-				
+
 
 		# fix computed values
 		for key in self.klase:
@@ -90,7 +90,7 @@ class Klasifikator(object):
 	def assignClass(self, x):
 		najbolja_klasa = set_head(self.klase)
 		najbolja_ocjena = self.getAposterioriValue(najbolja_klasa, x)
- 
+
 		for klasa in self.klase:
 			ocjena = self.getAposterioriValue(klasa, x)
 			if ocjena > najbolja_ocjena:
@@ -104,7 +104,7 @@ class Klasifikator(object):
 		uzoraka = len(test_set)
 
 		if uzoraka == 0: return 0
-		
+
 		for uzorak in test_set:
 			(x, y) = uzorak
 			(h, p) = self.assignClass(x)
@@ -122,9 +122,9 @@ class Klasifikator(object):
 			Px += self.P[key] * self.getProbability(x, key)
 
 		prob = self.P[klasa] * self.getProbability(x, klasa) / Px
-		self.__cache[(klasa, tuple(x))] = prob 
-		return prob 
-	
+		self.__cache[(klasa, tuple(x))] = prob
+		return prob
+
 	def getAmbigousSamples(self, test_set):
 		sve = list()
 		ret = list()
@@ -132,7 +132,7 @@ class Klasifikator(object):
 		for uzorak in test_set:
 			(x, y) = uzorak
 			(h, p) = self.assignClass(x)
-			
+
 			sve.append((p, uzorak))
 
 		for r in sorted(sve):
@@ -152,7 +152,7 @@ class Klasifikator(object):
 			print "sigma"
 			print self.sigma[key]
 			print "--------------------------"
-		return	
+		return
 
 	def printAposterioriValues(self, test_set, filename):
 		f = open(filename, "w")
@@ -161,7 +161,7 @@ class Klasifikator(object):
 		for klasa in self.klase:
 			buff += ("%s\t" % klasa)
 		buff += "klasa" + '\n'
-	
+
 		f.write(buff)
 
 		for uzorak in test_set:

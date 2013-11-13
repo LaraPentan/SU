@@ -53,8 +53,10 @@ def main():
 	model_a.train(train_set, poredak)
 	# model_a.printParameters()
 	print "Done"
+	print "Generiram izlaz za opceniti model ...",
 	model_a.printAposterioriValues(train_set, "../output/opceniti.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("opceniti", model_a.getErrorRate(train_set), model_a.getErrorRate(test_set)))
+	print "Done"
 
 	# dijeljena
 	model_b = dijeljena()
@@ -62,8 +64,10 @@ def main():
 	model_b.train(train_set, poredak)
 	# model_b.printParameters()
 	print "Done"
+	print "Generiram izlaz za model s dijeljenom matricom ...",
 	model_b.printAposterioriValues(train_set, "../output/dijeljena.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("dijeljena", model_b.getErrorRate(train_set), model_b.getErrorRate(test_set)))
+	print "Done"
 
 	# dijagonalna
 	model_c = dijagonalna()
@@ -71,9 +75,10 @@ def main():
 	model_c.train(train_set, poredak)
 	# model_c.printParameters()
 	print "Done"
+	print "Generiram izlaz za model s dijagonalnom matricom ...",
 	model_c.printAposterioriValues(train_set, "../output/dijagonalna.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("dijagonalna", model_c.getErrorRate(train_set), model_c.getErrorRate(test_set)))
-
+	print "Done"
 
 	# izotropna
 	model_d = izotropna()
@@ -81,8 +86,10 @@ def main():
 	model_d.train(train_set, poredak)
 	# model_d.printParameters()
 	print "Done"
+	print "Generiram izlaz za model s izotropnom matricom ...",
 	model_d.printAposterioriValues(train_set, "../output/izotropna.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("izotropna", model_d.getErrorRate(train_set), model_d.getErrorRate(test_set)))
+	print "Done"
 
 	f.close()
 
