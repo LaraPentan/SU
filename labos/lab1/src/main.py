@@ -9,7 +9,7 @@ from izotropna import *
 
 def parse_input(filename):
 	L = list()
-	f = open(filename, "r")	
+	f = open(filename, "r")
 
 	# ignore first line
 	f.readline()
@@ -22,7 +22,7 @@ def parse_input(filename):
 
 		for uzorak in xs:
 			x.append(float(uzorak))
-	
+
 		L.append((x, y))
 
 	f.close()
@@ -34,7 +34,7 @@ def main():
 
 	for arg in sys.argv:
 		if arg[:7] == "-input0":
-			print "Ucitavam skup za ucenje ...", 
+			print "Ucitavam skup za ucenje ...",
 			train_set = parse_input(arg[8:])
 			print "Done"
 		elif arg[:7] == "-input1":
@@ -42,7 +42,7 @@ def main():
 			test_set = parse_input(arg[8:])
 			print "Done"
 
-	# zeljeni poredak u ispisu	
+	# zeljeni poredak u ispisu
 	poredak = ["Narančasta", "Žuta", "Zelena", "Plava", "Tirkizna", "Indigo", "Modra", "Magenta"]
 
 	f = open("../output/greske.dat", "w")
@@ -55,7 +55,7 @@ def main():
 	print "Done"
 	model_a.printAposterioriValues(train_set, "../output/opceniti.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("opceniti", model_a.getErrorRate(train_set), model_a.getErrorRate(test_set)))
-	
+
 	# dijeljena
 	model_b = dijeljena()
 	print "Treniram model s dijeljenom matricom ...",
@@ -64,7 +64,7 @@ def main():
 	print "Done"
 	model_b.printAposterioriValues(train_set, "../output/dijeljena.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("dijeljena", model_b.getErrorRate(train_set), model_b.getErrorRate(test_set)))
-	
+
 	# dijagonalna
 	model_c = dijagonalna()
 	print "Treniram model s dijagonalnom matricom ...",
@@ -74,7 +74,7 @@ def main():
 	model_c.printAposterioriValues(train_set, "../output/dijagonalna.dat")
 	f.write("%s\t%.2lf\t%.2lf\n" % ("dijagonalna", model_c.getErrorRate(train_set), model_c.getErrorRate(test_set)))
 
-	
+
 	# izotropna
 	model_d = izotropna()
 	print "Treniram model s izotropnom matricom ...",
@@ -91,7 +91,7 @@ def main():
 	nejednoznacne = model_a.getAmbigousSamples(test_set)
 	print "Done"
 	model_a.printAposterioriValues(nejednoznacne[:5], "../output/nejednoznacne.dat")
-	
+
 	return
 
 if __name__ == "__main__":
