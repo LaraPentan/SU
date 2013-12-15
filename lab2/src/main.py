@@ -28,7 +28,7 @@ def parse_input(filename, NUM):
 
 def parse_dict(filename):
     D = dict()
-    f = open(filename, "r")
+    f = codecs.open(filename, "r", "utf-8")
 
     line_cnt = 0
     for line in f:
@@ -66,10 +66,16 @@ def main():
     print "Output path: ", sys.argv[5]
 
     # <zadatak a>
-    f = open(OUTPUT_PATH + "tezine1.dat", "w")
-    (w0, w) = compute_weight_vector(training_set, 0, NUM)
-    cee = CEE(training_set, w, w0)
+    print "Zadatak a)"
 
+    print "Racunam tezine razdvojnog vektora... ",
+    (w0, w) = compute_weight_vector(training_set, 0, NUM)
+    cee = CEE(training_set, w, w0, 0)
+
+    print "Done, cee = ", cee
+
+    print "Ispisujem tezine u tezine1.dat...",
+    f = codecs.open(OUTPUT_PATH + "tezine1.dat", "w", "utf-8")
     f.write("%.2lf\n" % w0)
     for wi in w:
         f.write("%.2lf\n" % wi)
@@ -77,33 +83,49 @@ def main():
     f.write("CEE: %.2lf\n" % cee);
 
     f.close()
+    print "Done"
     # </zadatak a>
 
     # zadatak b
-    f = codecs.open(OUTPUT_PATH + "optimizacija.dat", "w", "utf-8")
+    print "Zadatak b)"
     faktori = [0, 0.1, 1, 5, 10, 100, 1000]
+
     optimalni_faktor = 0
-    optimalni_ee = -1
+    optimalni_ge = -1
 
+    f = codecs.open(OUTPUT_PATH + "optimizacija.dat", "w", "utf-8")
     for faktor in faktori:
+        print "Racunam tezine razdvojnog vektora za lamba = ", faktor, "...",
         (w0, w) = compute_weight_vector(training_set, faktor, NUM)
-        trenutni_ee = error_rate(test_set, w, w0)
 
-        f.write(u"\u03BB = %.1lf, %.2lf\n" % (faktor, trenutni_ee))
+        trenutni_ge = error_rate(test_set, w, w0)
+        trenutni_cee = CEE(test_set, w, w0, faktor)
 
-        if optimalni_ee == -1 or optimalni_ee > trenutni_ee:
-            optimalni_ee = trenutni_ee
+        print "Done, cee = ", trenutni_cee, "ge = ", trenutni_ge
+
+        f.write(u"\u03BB = %s, %.2lf\n" % (faktor, trenutni_ge))
+
+        if optimalni_ge == -1 or optimalni_ge > trenutni_ge:
+            optimalni_ge = trenutni_ge
             optimalni_faktor = faktor
 
     f.write(u"optimalno: \u03BB = %.1lf\n" % optimalni_faktor);
-
     f.close()
+
+    print "Optimalni regularizacijski faktor = ", optimalni_faktor
+
     # </zadatak b>
 
     # <zadatak c>
-    f = open(OUTPUT_PATH + "tezine2.dat", "w")
+    print "Zadatak c)"
+    print "Racunam tezine razdvojnog vektora za lambda = ", optimalni_faktor, "...",
     (w0, w) = compute_weight_vector(training_set + test_set, optimalni_faktor, NUM)
-    cee = CEE(training_set + test_set, w, w0)
+    cee = CEE(training_set + test_set, w, w0, optimalni_faktor)
+    print "Done, CEE = ", cee
+
+
+    print "Ispisujem tezine u tezine2.dat...",
+    f = codecs.open(OUTPUT_PATH + "tezine2.dat", "w", "utf-8")
 
     f.write("%.2lf\n" % w0)
     for wi in w:
@@ -112,13 +134,17 @@ def main():
     f.write("CEE: %.2lf\n" % cee);
 
     f.close()
+    print "Done"
 
-    f = open(OUTPUT_PATH + "rijeci.txt", "w")
+    print "Ispisujem 20 najznacajnjih rijeci u rijeci.txt...",
+    f = codecs.open(OUTPUT_PATH + "rijeci.txt", "w", "utf-8")
     for indeks in map(lambda (x,y): y, sorted(zip(w, xrange(NUM)))[::-1])[:20]:
         f.write("%s\n" % rjecnik[indeks])
 
     f.close()
+    print "Done"
 
+    print "Ispisujem klasifikaciju ispitnog skupa u ispitni_predikcije.dat...",
     f = codecs.open(OUTPUT_PATH + "ispitni_predikcije.dat", "w", "utf-8")
     for sample in check_set:
         (x, y) = sample
@@ -128,8 +154,8 @@ def main():
         else: f.write("0\n")
 
     f.write(u"Greška: %.2lf\n" % error_rate(check_set, w, w0))
-
     f.close()
+    print "Done"
 
     # <zadatak c/>
 
