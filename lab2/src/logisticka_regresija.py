@@ -2,9 +2,9 @@ import numpy
 import math
 
 def sigmoid(x):
-    # avoiding
-    if x > 20: return 1 - 1e-9
-    if x < -20: return 1e-9
+    # avoiding math errors
+    if x > 25: return 1 - 1e-12
+    if x < -25: return 1e-12
     return 1 / (1 + math.exp(-x))
 
 def CEE(data_set, omega, omega_nula, regularizacija = 0):
