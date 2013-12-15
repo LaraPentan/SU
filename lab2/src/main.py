@@ -95,7 +95,7 @@ def main():
 
     f = codecs.open(OUTPUT_PATH + "optimizacija.dat", "w", "utf-8")
     for faktor in faktori:
-        print "Racunam tezine razdvojnog vektora za lamba = ", faktor, "...",
+        print "Racunam tezine razdvojnog vektora za lambda = ", faktor, "...",
         (w0, w) = compute_weight_vector(training_set, faktor, NUM)
 
         trenutni_ge = error_rate(test_set, w, w0)
@@ -109,7 +109,7 @@ def main():
             optimalni_ge = trenutni_ge
             optimalni_faktor = faktor
 
-    f.write(u"optimalno: \u03BB = %.1lf\n" % optimalni_faktor);
+    f.write(u"optimalno: \u03BB = %s\n" % optimalni_faktor);
     f.close()
 
     print "Optimalni regularizacijski faktor = ", optimalni_faktor
