@@ -71,6 +71,7 @@ def main():
     print "Racunam tezine razdvojnog vektora... ",
     (w0, w) = compute_weight_vector(training_set, 0, NUM)
     cee = CEE(training_set, w, w0, 0)
+    ee = error_rate(training_set, w, w0)
 
     print "Done, cee = ", cee
 
@@ -79,11 +80,11 @@ def main():
     f.write("%.2lf\n" % w0)
     for wi in w:
         f.write("%.2lf\n" % wi)
-    f.write("EE: %.2lf\n" % (cee / len(training_set)));
+    f.write("EE: %.2lf\n" % ee);
     f.write("CEE: %.2lf\n" % cee);
 
     f.close()
-    print "Done"
+    print "Done, cee =", cee, ", ee =", ee
     # </zadatak a>
 
     # zadatak b
@@ -105,7 +106,7 @@ def main():
 
         f.write(u"\u03BB = %s, %.2lf\n" % (faktor, trenutni_ge))
 
-        if optimalni_ge == -1 or optimalni_ge > trenutni_ge:
+        if optimalni_ge == -1 or optimalni_ge >= trenutni_ge:
             optimalni_ge = trenutni_ge
             optimalni_faktor = faktor
 
@@ -121,8 +122,9 @@ def main():
     print "Racunam tezine razdvojnog vektora za lambda = ", optimalni_faktor, "...",
     (w0, w) = compute_weight_vector(training_set + test_set, optimalni_faktor, NUM)
     cee = CEE(training_set + test_set, w, w0, optimalni_faktor)
-    print "Done, CEE = ", cee
+    ee = error_rate(training_set + test_set, w, w0)
 
+    print "Done, CEE = ", cee, "ee =", ee
 
     print "Ispisujem tezine u tezine2.dat...",
     f = codecs.open(OUTPUT_PATH + "tezine2.dat", "w", "utf-8")
@@ -130,7 +132,7 @@ def main():
     f.write("%.2lf\n" % w0)
     for wi in w:
         f.write("%.2lf\n" % wi)
-    f.write("EE: %.2lf\n" % (cee / len(training_set + test_set)));
+    f.write("EE: %.2lf\n" % ee);
     f.write("CEE: %.2lf\n" % cee);
 
     f.close()

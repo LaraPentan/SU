@@ -55,10 +55,17 @@ def compute_weight_vector(data_set, regularizacija, feature_cnt):
 
         # line search
         eta = 0.0
+        delta_eta = 0.01
         last = CEE(data_set, omega, omega_nula, regularizacija)
 
+        if regularizacija >= 100:
+            delta_eta /= 10.
+
+        if regularizacija >= 1000:
+            delta_eta /= 10.
+
         while eta <= 1.0:
-            novi_eta = eta + 0.01
+            novi_eta = eta + delta_eta
             curr = CEE( data_set,
                         omega * (1.0 - novi_eta * regularizacija) - novi_eta * delta_omega,
                         omega_nula - novi_eta * delta_omega_nula,
