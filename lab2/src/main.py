@@ -146,8 +146,8 @@ def main():
     f.close()
     print "Done"
 
-    print "Ispisujem klasifikaciju ispitnog skupa u ispitni_predikcije.dat...",
-    f = codecs.open(OUTPUT_PATH + "ispitni_predikcije.dat", "w", "utf-8")
+    print "Ispisujem klasifikaciju ispitnog skupa u ispitni-predikcije.dat...",
+    f = codecs.open(OUTPUT_PATH + "ispitni-predikcije.dat", "w", "utf-8")
     for sample in check_set:
         (x, y) = sample
         h = sigmoid( numpy.dot(w, x) + w0 )
