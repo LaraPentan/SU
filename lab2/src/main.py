@@ -70,7 +70,7 @@ def main():
 
     print "Racunam tezine razdvojnog vektora... ",
     (w0, w) = compute_weight_vector(training_set, 0, NUM)
-    cee = CEE(training_set, w, w0, 0)
+    cee = CEE(training_set, w, w0, regularizacija = 0)
     ee = error_rate(training_set, w, w0)
 
     print "Done, cee = ", cee
@@ -100,7 +100,7 @@ def main():
         (w0, w) = compute_weight_vector(training_set, faktor, NUM)
 
         trenutni_ge = error_rate(test_set, w, w0)
-        trenutni_cee = CEE(test_set, w, w0, faktor)
+        trenutni_cee = CEE(test_set, w, w0, regularizacija = 0)
 
         print "Done, cee = ", trenutni_cee, "ge = ", trenutni_ge
 
@@ -121,7 +121,7 @@ def main():
     print "Zadatak c)"
     print "Racunam tezine razdvojnog vektora za lambda = ", optimalni_faktor, "...",
     (w0, w) = compute_weight_vector(training_set + test_set, optimalni_faktor, NUM)
-    cee = CEE(training_set + test_set, w, w0, optimalni_faktor)
+    cee = CEE(training_set + test_set, w, w0, regularizacija = 0)
     ee = error_rate(training_set + test_set, w, w0)
 
     print "Done, CEE = ", cee, "ee =", ee
