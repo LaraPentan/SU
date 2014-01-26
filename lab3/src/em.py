@@ -74,10 +74,13 @@ def group(data, feature_cnt, K = 4, centroids = None, verbose = None, verbose2 =
     log_izglednost = get_log_likelihood(data, phi)
 
     # lets group this data
-    while iteracija < 200:
+    while True:
+
+        if math.isnan(log_izglednost):
+            break
 
         if verbose2:
-            fajl2.write("#%d: %.2lf\n" % (iteracija, log_izglednost))
+            fajl2.write("#%d: %.2lf\n" % (iteracija - 1, log_izglednost))
 
         num_centroids = dict()
 

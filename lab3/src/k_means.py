@@ -31,7 +31,7 @@ def group(data, feature_cnt, K = 4, centroids = None, verbose = None):
     iteracija = 1
 
     # lets group this data
-    while iteracija < 300:
+    while True:
         B = list()
 
         for (x, y) in data:

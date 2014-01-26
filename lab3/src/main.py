@@ -213,7 +213,7 @@ def main():
 
         conf_file.write("Konfiguracija %d:\n" % (i + 1))
         conf_file.write("log-izglednost: %.2lf\n" % (log_izglednost))
-        conf_file.write("iteracija: %d\n" % (iteracija))
+        conf_file.write("#iteracija: %d\n" % (iteracija))
 
         print "Done"
 
@@ -221,7 +221,6 @@ def main():
     conf_file.close()
 
     # EM using k_means for initialization
-
     print "Using KMEANS to init EM...",
 
     # init with kmeans
@@ -234,16 +233,19 @@ def main():
 
     (groups, (iteracija, J)) = result
 
-    # continue with em
-    # centroids = [group for (group, cnt) in groups]
+    print "Done"
+    print "Running EM...",
 
-    result = em.group(input_data, feature_cnt, 4, centroids, verbose2 =
+    # continue with em
+
+    result = em.group(input_data, feature_cnt, 4, groups, verbose2 =
             OUTPUT_PATH + "em-kmeans.dat")
+
     if result == None:
         print "EM returned invalid result!"
-        return
+    else:
+        print "Done"
 
-    print "Done"
     # end
     return
 
