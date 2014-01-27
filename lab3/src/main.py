@@ -88,7 +88,7 @@ def print_em(input_data, feature_cnt, K, centroids, f, verbose = None):
         for x in group:
             f.write(" %.2lf" % (x))
 
-        f.write("\ngrupa %d, %d primjera\n" % (i + 1, cnt))
+        f.write("\ngrupa %d: %d primjera\n" % (i + 1, cnt))
 
     f.write("#iter: %d\nlog-izglednost: %.2lf\n" % (iteracija, log_izglednost))
     return
