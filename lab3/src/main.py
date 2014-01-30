@@ -187,7 +187,6 @@ def main():
     # close file
     em_file.close()
 
-
     # EM with given different configurations
     # open file
     conf_file = codecs.open(OUTPUT_PATH + "em-konf.dat", "w", "utf-8")
@@ -219,7 +218,7 @@ def main():
 
     # close file
     conf_file.close()
-
+    """
     # EM using k_means for initialization
     print "Using KMEANS to init EM...",
 
@@ -245,7 +244,7 @@ def main():
         print "EM returned invalid result!"
     else:
         print "Done"
-
+    """
     # end
     return
 

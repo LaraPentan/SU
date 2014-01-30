@@ -174,7 +174,7 @@ def group(data, feature_cnt, K = 4, centroids = None, verbose = None, verbose2 =
                     counter.append(0)
 
                 if verbose:
-                    lista = sorted(lista, reverse = True)
+                    lista = sorted(lista, key=lambda (a, b): -a)
                     for (val, name) in lista:
                         fajl.write("%s %.2lf\n" % (name, val))
                 # endif
